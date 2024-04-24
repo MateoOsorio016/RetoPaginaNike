@@ -11,6 +11,7 @@ export const Homepage= ()=>{
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [show, setShow] = useState(false);
     useEffect(()=>{
+      console.log("entre")
       async function loadProducts(){
         const res= await getProducts()
           setProducts(res.data)
