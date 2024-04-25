@@ -1,10 +1,11 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from .models import CustomUser
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer, UserLoginSerializer
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import authentication_classes, permission_classes
@@ -17,45 +18,52 @@ class CustomUserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
 
 
-@api_view(['POST'])
-def login(request):
+class UserLoginView(APIView):
+    def post(self, request):
+        serializer = UserLoginSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-    user = get_object_or_404(CustomUser, email=request.data['email'])
+        user = serializer.validated_data['email']
+        refresh = RefreshToken.for_user(user)
 
-    if not user.check_password(request.data['password']):
-        return Response({'error': 'Invalid password!'}, status=status.HTTP_400_BAD_REQUEST)
+        response_data = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user_id': user.id,
+            'username': user.username,
+        }
+
+        return Response(response_data, status=status.HTTP_200_OK)
     
-    token, created = Token.objects.get_or_create(user=user)
-    serializer= CustomUserSerializer(instance=user)
 
-    return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
+class registerUserView(APIView):
+    def post(self, request):
+        serializer = CustomUserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        refresh = RefreshToken.for_user(user)
+        response_data = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user_id': user.id,
+            'username': user.username,
+        }
 
-@api_view(['POST'])
-def register(request):
-    serializer = CustomUserSerializer(data=request.data)
-    if serializer.is_valid():
+        return Response(response_data, status=status.HTTP_200_OK)
 
-        email =  serializer.validated_data.get('email')
-        if CustomUser.objects.filter(email=email).exists():
-            return Response({'message': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
+    
+
+class get_user(APIView):
+    def get(self, request, pk):
+        print(pk)
+        try:
+            user = CustomUser.objects.get(id=pk)
+        except CustomUser.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'Usuario no encontrado'})
         
-        user = CustomUser(**serializer.validated_data)
         
-        user.set_password(request.data['password'])
-        
-        user.save()
-        
-        token = Token.objects.create(user=user)
-        return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_201_CREATED)
-
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def get_user(request):
-
-
-    return Response({'message': 'Welcome!'})
+        serializer = CustomUserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
 
