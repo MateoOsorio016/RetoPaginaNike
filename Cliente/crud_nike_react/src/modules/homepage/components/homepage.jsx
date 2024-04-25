@@ -1,13 +1,15 @@
 import { useEffect, useState} from "react";
 import Modal from 'react-bootstrap/Modal';
-import { getProducts } from "../../api/apiproducts";
-import { BiShoppingBag, BiSearch } from "react-icons/bi";
-import logo from './../../assets/logo.png'
-import nike from './../../assets/nike.png'
+import {LoginModal} from '../../login/components/login'
+import {getProducts} from './../api/apiproducts'
+import { BiShoppingBag, BiSearch, BiUser} from "react-icons/bi";
+import logo from '../../../assets/logo.png'
+import nike from '../../../assets/nike.png'
 import './home.css'
 
 export const Homepage= ()=>{
     const [products, setProducts] = useState([])
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [show, setShow] = useState(false);
     useEffect(()=>{
@@ -28,6 +30,14 @@ export const Homepage= ()=>{
       setShow(true);
       console.log("Esto traje", selectedProduct)
     }
+
+    const handleLoginClick = () => {
+      setIsLoginModalOpen(true);
+  };
+
+    const handleCloseLoginModal = () => {
+      setIsLoginModalOpen(false);
+  };
 
 
 
@@ -51,6 +61,8 @@ export const Homepage= ()=>{
               <BiSearch size={20} className="search-icon" />
             </div>
             <button><BiShoppingBag size={30}/></button>
+            <button onClick={handleLoginClick}><BiUser size={30} /></button>
+            <LoginModal show={isLoginModalOpen} handleClose={handleCloseLoginModal} />
           </div>
         </nav>
       </header>
