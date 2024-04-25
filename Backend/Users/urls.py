@@ -7,7 +7,7 @@ router.register(r'users', views.CustomUserViewSet, 'users')
 
 urlpatterns = [
     path('users/', include(router.urls)),
-    re_path('login', views.login),
-    re_path('register', views.register),
-    re_path('get_user', views.get_user)
+    re_path('login', views.UserLoginView.as_view()),
+    re_path('register', views.registerUserView.as_view()),
+    path('users/get_user/<int:pk>', views.get_user.as_view()),
 ]
