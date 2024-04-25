@@ -26,4 +26,3 @@ class Product(models.Model):
         self.updated_at= timezone.now()
         super(Product, self).save(*args, **kwargs)
 
-
