@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { login, register } from '../api/apilogin';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
@@ -17,7 +17,8 @@ export const LoginModal = ({ show, handleClose }) => {
         if (isLoginForm) {
             const res = await login(data);
             console.log(res);
-            if (res.data.token) {
+            if (res.data.access) {
+                localStorage.setItem('token', JSON.stringify(res.data));
                 console.log('Logged in');
                 navigate('/admin');
             }
@@ -28,6 +29,7 @@ export const LoginModal = ({ show, handleClose }) => {
         }
     });
 
+    
     const toggleForm = () => {
         setIsLoginForm(!isLoginForm);
     };
@@ -81,14 +83,15 @@ export const LoginModal = ({ show, handleClose }) => {
                         <div className="inputs">
                             <div className="input">
                                 <img src={email} alt="" />
-                                <input type="email" {...registerForm("email", { required: true })} placeholder='Email' />
+                                <input type="email" {...registerForm("email", { required: true })} placeholder='Email' autoComplete='off' />
                                 {errors.email && <span>This field is required</span>}
                             </div>
                             <div className="input">
                                 <img src={password} alt="" />
-                                <input type="password" {...registerForm("password", { required: true })} placeholder='Password' />
+                                <input type="password" {...registerForm("password", { required: true })} placeholder='Password' autoComplete='off' />
                                 {errors.password && <span>This field is required</span>}
                             </div>
+                            
                         </div>
                         <div className="register">
                             {isLoginForm ? 'Don\'t have an account? ' : 'Already have an account? '}

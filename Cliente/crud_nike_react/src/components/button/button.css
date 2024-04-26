@@ -1,0 +1,82 @@
+
+/* Button Filled */
+
+.btn--filled {
+	display: block;
+	padding: 0.5rem 1rem;
+	/* width: auto; */
+	border-radius: 10px;
+	color: #fff;
+	font-size: 1rem;
+	font-weight: bold;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	background: #9f212f;
+	text-transform: uppercase;
+	transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn--filled:hover {
+	background: #7f212f;
+}
+
+
+/* Button Outlined */
+
+.btn--outline{
+    display: block;
+    padding: 0.5rem 1rem;
+    /* width: auto; */
+    border-radius: 10px;
+    color: #9f212f;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid #9f212f;
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn--outline:hover {
+    background: #9f212f;
+    color: #fff;
+}
+
+.btn--auto{
+    width: auto;
+}
+
+.btn--fixed{
+    width: 100%;
+}
+
+/* Button Active Animation */
+
+.circle {
+	position: absolute;
+    background: #fff;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    border-radius: 50%;
+    animation: animate .5s linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        width: 0rem;
+        height: 0rem;
+        opacity: .25;
+    }
+    100% {
+        width: 500px;
+        height: 500px;
+        opacity: 0;
+    }
+}

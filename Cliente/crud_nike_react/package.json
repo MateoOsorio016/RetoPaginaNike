@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mui/x-data-grid": "^7.3.1",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "hugeicons-react": "^0.2.0",
+    "lucide-react": "^0.375.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",

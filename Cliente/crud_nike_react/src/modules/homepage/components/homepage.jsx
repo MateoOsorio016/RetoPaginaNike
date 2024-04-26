@@ -17,7 +17,7 @@ export const Homepage= ()=>{
       async function loadProducts(){
         const res= await getProducts()
           setProducts(res.data)
-          console.log(res.data)
+          console.log(res.data, "HOLA ESTOY AQUI ")
       }
       loadProducts()
     }, [])
@@ -73,7 +73,7 @@ export const Homepage= ()=>{
         <div className='card-container'>
         {products.map(products => (
 							<div className='card' key={products.id}>
-								<img src={products.image} alt={products.name} />
+								<img src={`http://localhost:8000${products.image}`} alt={products.name} />
                 <div className="card-content">
 									<h3>{products.name}</h3>
                   <p>{products.category}</p>

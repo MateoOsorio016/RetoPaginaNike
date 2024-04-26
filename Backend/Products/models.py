@@ -19,10 +19,17 @@ class Product(models.Model):
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(auto_now=True)
 
+    REQUIRED_FIELDS= ['name', 'price', 'quantity', 'description', 'category', 'image']
+
+    class Meta:
+        verbose_name= 'Product'
+        verbose_name_plural= 'Products'
+        db_table= 'products'
+
+
     def __str__(self):
-        return self.name
+        return f'{self.name} - {self.category}'.title()
     
-    def save(self, *args, **kwargs):
-        self.updated_at= timezone.now()
-        super(Product, self).save(*args, **kwargs)
+    
+
 

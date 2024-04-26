@@ -48,7 +48,7 @@ class CustomUser(AbstractUser):
     created_at= models.DateTimeField(auto_now_add=True)
     objects= CustomUserManager()
 
-    REQUIRED_FIELDS= ['first_name', 'last_name', 'address', 'phone', 'birthdate', 'email', 'group']
+    REQUIRED_FIELDS= ['first_name', 'last_name', 'address', 'phone', 'birthdate', 'email' , 'group']
 
     class Meta:
         verbose_name= 'Usuario'

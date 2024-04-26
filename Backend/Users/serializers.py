@@ -10,7 +10,7 @@ class GroupSerializer(serializers.ModelSerializer):
     
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    group = GroupSerializer(many=False)
+    group= serializers.PrimaryKeyRelatedField(queryset=Group.objects.all())
     class Meta:
         model= CustomUser
         fields= ('username', 'first_name', 'last_name', 'address', 'phone' , 'birthdate', 'email', 'password', 'group')

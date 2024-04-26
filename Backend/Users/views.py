@@ -31,6 +31,9 @@ class UserLoginView(APIView):
             'access': str(refresh.access_token),
             'user_id': user.id,
             'username': user.username,
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
@@ -47,9 +50,13 @@ class registerUserView(APIView):
             'access': str(refresh.access_token),
             'user_id': user.id,
             'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
+    
+
 
 
     
