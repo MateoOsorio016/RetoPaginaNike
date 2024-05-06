@@ -1,94 +1,72 @@
-.tableContainer{
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 1rem;
+/* Estilos para la tabla */
+.tableContainer {
     width: 90%;
     margin: 0 auto;
     padding: 2rem;
-    border-radius: 5px;
-    overflow: hidden;
+    border-radius: 10px;
+    background-color: #efdfef; /* Color de fondo suave */
 }
 
-.bottomTable{
+.bottomTable {
     width: 100%;
-    overflow: auto;
+    padding-top: 2%;
+    overflow-x: auto;
 }
 
-.tableContainer .dataTable,
-.tableContainer .datatable--alternativeStyle
-{
+.dataTable {
     width: 100%;
     border-collapse: collapse;
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 0 20px rgba(0,0,0,0.15);
 }
 
-.tableContainer .dataTable thead tr{
-    background-color: #9f212f;
-    color: #fff;
+.dataTable thead tr {
+    background-color: #b8b0e9; /* Color 3 */
+    color: #111011; /* Color 1 */
 }
 
-.tableContainer .dataTable thead tr th, 
-.tableContainer .datatable--alternativeStyle thead tr th
-{
-    padding: .5rem 1rem;
+.dataTable th {
+    padding: 1rem 0.5rem;
     text-align: center;
     text-transform: uppercase;
 }
 
-.tableContainer .datatable--alternativeStyle thead tr th
-{
-    color: #9f212f;
+.dataTable tbody tr:nth-child(even) {
+    background-color: #c4c1d8; /* Color 2 */
 }
 
-.tableContainer .dataTable tbody tr td,
-.tableContainer .datatable--alternativeStyle tbody tr td{
-    padding: .5rem 1rem;
+.dataTable tbody tr:hover {
+    background-color: #f9f9f9; /* Color 5 */
+}
+
+.dataTable td {
+    padding: 1rem 0.5rem;
     text-align: center;
 }
 
-.tableContainer .dataTable tbody tr:nth-child(even)
-.tableContainer .datatable--alternativeStyle tbody tr:nth-child(even)
-{
-    background-color: #D9D9D9;
-}
-
-.tableContainer .dataTable tbody tr:hover
-.tableContainer .datatable--alternativeStyle tbody tr:hover{
-    background-color: #e0ddd6;
-    color: #9f212f;
-}
-
-.tableContainer .dataTable tbody tr td.dataTable__actions,
-.tableContainer .datatable--alternativeStyle tbody tr td.dataTable__actions{
+.dataTable__actions {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
 }
 
-.tableContainer .actionsTable{
+.actionsTable {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    width: 100%;
 }
 
-.tableContainer .actionsTable .left{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1rem;
-}
-
-.tableContainer .actionsTable .left a{
-    text-transform: capitalize;
+.actionsTable .left a {
     text-decoration: none;
-    color: #9f212f;
+    color: #111011; /* Color 1 */
     font-weight: bold;
     cursor: pointer;
 }
+.createButton{
+    margin-right: 1rem; 
+
+}
+
+/* Estilos adicionales para botones u otros elementos según sea necesario */

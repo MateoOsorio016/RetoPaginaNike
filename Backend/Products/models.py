@@ -1,13 +1,12 @@
-from django.utils import timezone
 from django.db import models
 
 # Create your models here.
 
 class Product(models.Model):
     options= (
-        ('shoes', 'Shoes'),
-        ('shirt', 'Shirt'),
-        ('hoodie', 'Hoodie'),
+        ('Zapatos', 'Zapatos'),
+        ('Camisas', 'Camisas'),
+        ('Buzos', 'Buzos'),
     )
     name= models.CharField(max_length=200)
     price= models.DecimalField(max_digits=10, decimal_places=2)
@@ -18,8 +17,6 @@ class Product(models.Model):
     state= models.BooleanField(default=True)
     created_at= models.DateTimeField(auto_now_add=True)
     updated_at= models.DateTimeField(auto_now=True)
-
-    REQUIRED_FIELDS= ['name', 'price', 'quantity', 'description', 'category', 'image']
 
     class Meta:
         verbose_name= 'Product'

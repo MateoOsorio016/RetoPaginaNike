@@ -1,9 +1,8 @@
-import { ProductsList } from "../modules/products/components/productsList";
-
+import { ProductsCreate } from "../modules/products/components/productsCreate";
 export function Products() {
   return (
     <div>
-      <ProductsList />
+      <ProductsCreate />
     </div>
   );
 }

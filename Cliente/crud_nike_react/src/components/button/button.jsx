@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import './button.css';
 
-export const Button = ({ text = "", onClick, fill = true, autoSize = true }) => {
+export const Button = ({ icon = null, onClick, fill = true, autoSize = true }) => {
   const btnRef = useRef(null);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export const Button = ({ text = "", onClick, fill = true, autoSize = true }) => 
       className={`btn--${fill ? 'filled' : 'outline'} btn--${autoSize ? 'auto' : 'fixed'}`}
       ref={btnRef}
     >
-      {text}
+      {icon} {/* Renderiza el icono aquí */}
     </button>
   );
 };

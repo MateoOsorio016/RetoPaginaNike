@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { IoAddCircleSharp } from 'react-icons/io5';
+import { IoAddCircleOutline, IoEye   } from 'react-icons/io5';
+import { CiEdit } from 'react-icons/ci';
+import { FaTrash } from "react-icons/fa6";
 import { Link, useNavigate } from 'react-router-dom';
 import {Button} from '../button/button';
 import './table.css';
@@ -16,6 +18,7 @@ export const Table = ({
   editLink = 'edit',
   alternativeStyle = false,
   deleteFunction,
+  detailFunction,
   buttonsActions,
   tituloDocumento,
   nombreArchivo,
@@ -49,11 +52,11 @@ export const Table = ({
               <Link to={createLink} className='createButton'>
                 {createText ? (
                   <>
-                    <IoAddCircleSharp /> {createText}
+                    <IoAddCircleOutline size={30}/> 
                   </>
                 ) : (
                   <>
-                    <IoAddCircleSharp /> Crear Nuevo
+                    <IoAddCircleOutline/> Crear Nuevo
                   </>
                 )}
               </Link>
@@ -97,12 +100,20 @@ export const Table = ({
                           text="Editar"
                           onClick={() => navigate(`${editLink}/${row.id}`)}
                           fill={true}
+                          icon={<CiEdit/>}
                         />
                       )}
+                      <Button
+                      text="Detalle"
+                      onClick={() => detailFunction && detailFunction(row)}
+                      fill={true}
+                      icon={<IoEye/>}
+                      />
                       <Button
                         text="Eliminar"
                         onClick={() => deleteFunction && deleteFunction(row.id)}
                         fill={false}
+                        icon={<FaTrash />}
                       />
                     </td>
                   </tr>

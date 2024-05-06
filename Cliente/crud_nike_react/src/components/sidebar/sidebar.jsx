@@ -1,33 +1,49 @@
-import { MoreVertical, ChevronLast, ChevronFirst } from "lucide-react"
-import { useContext, createContext, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Menu, ChevronLast, ChevronFirst } from "lucide-react"
+import { useContext, createContext, useState, useEffect } from "react"
+import { BiUser} from "react-icons/bi";
+import { useNavigate, useParams } from "react-router-dom"
+import { Dropdown } from 'react-bootstrap'
 
 const SidebarContext = createContext()
 
 export default function Sidebar({ children }) {
+  const navigate = useNavigate()
   const [expanded, setExpanded] = useState(true)
+  const [showMenu, setShowMenu] = useState(false)
+  const [menuPosition, setMenuPosition] = useState({ x: 20, y: -500 })
   const user = JSON.parse(localStorage.getItem("token"))
-  console.log(user)
+  const parasm = useParams();
 
-  // Use the name and email variables in your code as needed
+  const handleLogout = async () => {
+    localStorage.removeItem("token")
+    navigate("/home") 
+  }
 
-  
+  const handleContextMenu = (e) => {
+    e.preventDefault()
+    console.log("entre al menu")
+    setShowMenu(true)
+    setMenuPosition({
+      x: e.clientX, y: e.clientY
+    })
+  }
+
+
   return (
     <aside className="h-screen">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img
             src="https://img.logoipsum.com/243.svg"
-            className={`overflow-hidden transition-all ${
-              expanded ? "w-32" : "w-0"
-            }`}
+            className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"
+              }`}
             alt=""
           />
           <button
             onClick={() => setExpanded((curr) => !curr)}
             className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100"
           >
-            {expanded ? <ChevronFirst /> : <ChevronLast />}
+            {expanded ? <ChevronFirst size={40} /> : <ChevronLast />}
           </button>
         </div>
 
@@ -36,63 +52,63 @@ export default function Sidebar({ children }) {
         </SidebarContext.Provider>
 
         <div className="border-t flex p-3">
-          <img
-            src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
-            alt=""
-            className="w-10 h-10 rounded-md"
-          />
+          <button style={{paddingRight: "10px"}}onClick={handleContextMenu}><BiUser size={25}/></button>
           <div
-            className={`
-              flex justify-between items-center
-              overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}
-          `}
+            className={`flex justify-between items-center overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"
+              }`}
           >
             <div className="leading-4">
-              <h4 className="font-semibold">{user.username}</h4>
+              <h4 className="font-semibold">{user.username} </h4>
               <span className="text-xs text-gray-600">{user.email}</span>
             </div>
-            <MoreVertical size={20} />
           </div>
         </div>
       </nav>
+            <Dropdown
+              show={showMenu}
+              onHide={() => setShowMenu(false)}
+              style={{ position: "fixed", top: menuPosition.y, left: menuPosition.x }}
+            >
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={handleLogout}>Cerrar Sesión</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate(`/userUpdate/${user.user_id}`)}>Editar Perfil</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
     </aside>
-  )
+  );
 }
 
-export function SidebarItem({ icon, text, active, alert, route}) {
+export function SidebarItem({ icon, text, active, alert, route }) {
   const { expanded } = useContext(SidebarContext)
   const navigate = useNavigate()
-  const handleNavigation= (route)=>{
+  const handleNavigation = (route) => {
     navigate(route)
   }
-  
+
   return (
     <li
       className={`
         relative flex items-center py-2 px-3 my-1
         font-medium rounded-md cursor-pointer
         transition-colors group
-        ${
-          active
-            ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
-            : "hover:bg-indigo-50 text-gray-600"
+        ${active
+          ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+          : "hover:bg-indigo-50 text-gray-600"
         }
     `}
-        onClick={()=>handleNavigation(route)}
+      onClick={() => handleNavigation(route)}
     >
       {icon}
       <span
-        className={`overflow-hidden transition-all ${
-          expanded ? "w-52 ml-3" : "w-0"
-        }`}
+        className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"
+          }`}
       >
         {text}
       </span>
       {alert && (
         <div
-          className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${
-            expanded ? "" : "top-2"
-          }`}
+          className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${expanded ? "" : "top-2"
+            }`}
         />
       )}
 

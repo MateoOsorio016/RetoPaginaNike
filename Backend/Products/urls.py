@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
-from Products import views
 from . import views
+from Products import views
 
 
 urlpatterns = [

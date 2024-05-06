@@ -5,13 +5,12 @@ from .models import Product
 class ProductsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ('id', 'name', 'price', 'quantity', 'description', 'category', 'image')
 
     def validate(self, data):
-    
         if 'quantity' in data and data['quantity'] < 0:
-            raise serializers.ValidationError({"quantity" 'La cantidad no puede ser negativa.'})
+            raise serializers.ValidationError({"quantity": 'La cantidad no puede ser negativa.'})
         if 'price' in data and data['price'] < 0:
-            raise serializers.ValidationError({"price" 'El precio no puede ser negativo.'})
+            raise serializers.ValidationError({"price": 'El precio no puede ser negativo.'})
         
         return data

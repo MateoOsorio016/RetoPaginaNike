@@ -25,6 +25,8 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, first_name, last_name, address, phone, birthdate, email, group, password=None):
+        print("Contraseña recibida para crear usuario:", password)
+
         user= self.create_user(
             username= username,
             first_name= first_name,
@@ -59,6 +61,3 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'.title()
     
-
-    
-   

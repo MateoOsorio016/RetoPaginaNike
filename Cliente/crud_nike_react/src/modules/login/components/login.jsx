@@ -14,13 +14,14 @@ export const LoginModal = ({ show, handleClose }) => {
     const { register: registerForm, handleSubmit: handleSubmitForm, formState: { errors } } = useForm();
 
     const onSubmit = handleSubmitForm(async data => {
+        data.group = 1;
         if (isLoginForm) {
             const res = await login(data);
             console.log(res);
             if (res.data.access) {
                 localStorage.setItem('token', JSON.stringify(res.data));
                 console.log('Logged in');
-                navigate('/admin');
+                navigate('/productsList');
             }
         } else {
             const res = await register(data);
@@ -29,7 +30,7 @@ export const LoginModal = ({ show, handleClose }) => {
         }
     });
 
-    
+
     const toggleForm = () => {
         setIsLoginForm(!isLoginForm);
     };
@@ -91,7 +92,6 @@ export const LoginModal = ({ show, handleClose }) => {
                                 <input type="password" {...registerForm("password", { required: true })} placeholder='Password' autoComplete='off' />
                                 {errors.password && <span>This field is required</span>}
                             </div>
-                            
                         </div>
                         <div className="register">
                             {isLoginForm ? 'Don\'t have an account? ' : 'Already have an account? '}

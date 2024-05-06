@@ -16,7 +16,7 @@ export const Admin =() => {
     return(
         <div className='flex'>
             <Sidebar>
-                <SidebarItem icon={<LayoutDashboard />} text= "Dashboard" alert={false} active={true} route="/admin" ></SidebarItem>
+                <SidebarItem icon={<LayoutDashboard />} text= "Tienda" alert={false} active={true} route="/home" ></SidebarItem>
                 <SidebarItem icon={<ShoppingBagIcon />} text= "Productos" alert={false} active={true}  route="/productsList"></SidebarItem>
             </Sidebar>
         </div>

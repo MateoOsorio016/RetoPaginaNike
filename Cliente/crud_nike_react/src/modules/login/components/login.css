@@ -1,26 +1,35 @@
+/* Estilos generales del contenedor modal */
 .modalContainer {
     display: flex;
     flex-direction: column;
-    padding-bottom: 30px;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+/* Espaciado y diseño de los inputs */
 .inputs {
-    margin-top: 55px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px;
 }
 
+/* Diseño de cada campo de input, con icono */
 .input {
     display: flex;
     align-items: center;
-    width: 100%; /* Ensure it fits in the modal */
-    background: #eaeaea;
-    border-radius: 6px;
+    width: 100%;
+    background: #f7f7f7;
+    border-radius: 30px;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.06);
 }
 
 .input img {
-    margin: 0 30px;
+    width: 24px;
+    margin: 0 15px;
 }
 
 .input input {
@@ -28,31 +37,48 @@
     background: transparent;
     border: none;
     outline: none;
-    padding: 15px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #333;
 }
 
+/* Estilo para la sección de registro y cambio de forma */
 .register {
-    margin-top: 27px;
-    color: #797979;
-    font-size: 18px;
+    margin-top: 20px;
+    text-align: center;
+    color: #666;
+    font-size: 16px;
 }
 
 .register span {
-    color: #4c00b4;
+    color: #0071dc;
     cursor: pointer;
+    font-weight: bold;
 }
 
+/* Estilos del botón de envío */
 .submitContainer {
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
     justify-content: center;
 }
 
 .submit {
-    padding: 10px 20px;
+    padding: 10px 30px;
     color: #fff;
-    background: #4c00b4;
-    border-radius: 50px;
-    font-size: 20px;
+    background: #0071dc; /* Color azul similar al de Nike */
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
     cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.submit:active {
+    transform: translateY(1px);
 }
