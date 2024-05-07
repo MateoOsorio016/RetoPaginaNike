@@ -69,9 +69,8 @@ class userUpdateView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
     
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    
-
+        
+      
 class get_user(APIView):
     def get(self, request, pk):
         print(pk)

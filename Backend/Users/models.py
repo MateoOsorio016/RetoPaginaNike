@@ -25,8 +25,6 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, first_name, last_name, address, phone, birthdate, email, group, password=None):
-        print("Contraseña recibida para crear usuario:", password)
-
         user= self.create_user(
             username= username,
             first_name= first_name,
@@ -50,7 +48,7 @@ class CustomUser(AbstractUser):
     created_at= models.DateTimeField(auto_now_add=True)
     objects= CustomUserManager()
 
-    REQUIRED_FIELDS= ['first_name', 'last_name', 'address', 'phone', 'birthdate', 'email' , 'group']
+    REQUIRED_FIELDS= ['first_name', 'last_name', 'address', 'phone', 'birthdate', 'email', 'group']
 
     class Meta:
         verbose_name= 'Usuario'

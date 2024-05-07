@@ -42,9 +42,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         if edad < 18:
             raise serializers.ValidationError("Debes ser mayor de 18 años para registrarte.")
         return value
-    
-    
-    
+
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=50, required=True)
     password = serializers.CharField(max_length=100, required=True, write_only=True)
@@ -70,4 +68,3 @@ class UserLoginSerializer(serializers.Serializer):
         data['email'] = user 
         return data
 
-    
