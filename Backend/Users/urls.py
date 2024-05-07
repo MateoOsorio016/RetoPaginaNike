@@ -9,5 +9,6 @@ urlpatterns = [
     path('users/', include(router.urls)),
     re_path('login', views.UserLoginView.as_view()),
     re_path('register', views.registerUserView.as_view()),
-    path('users/get_user/<int:pk>', views.get_user.as_view()),
+    path('get_user/<int:pk>', views.get_user.as_view()),
+    path('update_user/<int:pk>', views.userUpdateView.as_view()),
 ]

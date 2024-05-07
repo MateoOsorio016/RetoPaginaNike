@@ -1,4 +1,5 @@
 import { useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import {LoginModal} from '../../login/components/login'
 import {getProducts} from './../api/apiproducts'
@@ -12,15 +13,17 @@ export const Homepage= ()=>{
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [show, setShow] = useState(false);
+    const navigate = useNavigate();
+
+    
     useEffect(()=>{
-      console.log("entre")
       async function loadProducts(){
         const res= await getProducts()
           setProducts(res.data)
-          console.log(res.data)
+          console.log(res.data, "HOLA ESTOY AQUI ")
       }
       loadProducts()
-    }, [])
+    }, [navigate])
 
     const handleClose = () => setShow(false);
 
@@ -32,7 +35,11 @@ export const Homepage= ()=>{
     }
 
     const handleLoginClick = () => {
+      if(!localStorage.getItem('token')){
       setIsLoginModalOpen(true);
+      }else{
+        navigate('/admin');
+      }
   };
 
     const handleCloseLoginModal = () => {
@@ -73,7 +80,7 @@ export const Homepage= ()=>{
         <div className='card-container'>
         {products.map(products => (
 							<div className='card' key={products.id}>
-								<img src={products.image} alt={products.name} />
+								<img src={`http://localhost:8000${products.image}`} alt={products.name} />
                 <div className="card-content">
 									<h3>{products.name}</h3>
                   <p>{products.category}</p>

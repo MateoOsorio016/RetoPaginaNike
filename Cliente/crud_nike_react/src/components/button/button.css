@@ -1,0 +1,68 @@
+/* Botón Relleno */
+.btn--filled {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    color: #0e0d0d; /* Color 5 */
+    font-size: 1rem;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #534e57; /* Color 3 */
+
+}
+
+.btn--filled:hover {
+    background: linear-gradient(135deg, #2ba1c5, #111011);
+    color: #fff; /* Invertido para un efecto de hover suave */
+}
+
+/* Botón Contorneado */
+.btn--outline {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    color: #d81c1c; /* Color 3 */
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid #534e57; /* Color 3 */
+    outline: none;
+    cursor: pointer;
+    background: transparent;
+    text-transform: uppercase;
+    transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn--outline:hover {
+    color: #fff; /* Cambiado para mayor contraste */
+    background: linear-gradient(135deg, #2ba1c5, #111011); /* Invertido para un efecto de hover suave */
+}
+
+/* Animación Activa del Botón */
+.circle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    border-radius: 50%;
+    animation: animate .5s linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        width: 0rem;
+        height: 0rem;
+        opacity: 0.25;
+    }
+    100% {
+        width: 500px;
+        height: 500px;
+        opacity: 0;
+    }
+}

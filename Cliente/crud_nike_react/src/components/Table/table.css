@@ -1,0 +1,72 @@
+/* Estilos para la tabla */
+.tableContainer {
+    width: 90%;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 10px;
+    background-color: #efdfef; /* Color de fondo suave */
+}
+
+.bottomTable {
+    width: 100%;
+    padding-top: 2%;
+    overflow-x: auto;
+}
+
+.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.dataTable thead tr {
+    background-color: #b8b0e9; /* Color 3 */
+    color: #111011; /* Color 1 */
+}
+
+.dataTable th {
+    padding: 1rem 0.5rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.dataTable tbody tr:nth-child(even) {
+    background-color: #c4c1d8; /* Color 2 */
+}
+
+.dataTable tbody tr:hover {
+    background-color: #f9f9f9; /* Color 5 */
+}
+
+.dataTable td {
+    padding: 1rem 0.5rem;
+    text-align: center;
+}
+
+.dataTable__actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.actionsTable {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.actionsTable .left a {
+    text-decoration: none;
+    color: #111011; /* Color 1 */
+    font-weight: bold;
+    cursor: pointer;
+}
+.createButton{
+    margin-right: 1rem; 
+
+}
+
+/* Estilos adicionales para botones u otros elementos según sea necesario */

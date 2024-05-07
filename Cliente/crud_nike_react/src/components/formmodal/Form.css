@@ -1,0 +1,89 @@
+/* Reset básico para inputs y botón */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif; /* Fuente limpia y profesional */
+    background-color: #f4f4f9; /* Un fondo suave para el contenido */
+    margin: 0;
+    padding: 20px;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #efdfef;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.title{
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+
+}
+
+.input {
+    margin-bottom: 15px;
+}
+
+.input label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.input input,
+.input select,
+.input textarea {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.input input[type="file"] {
+    background-color: #f8f8f8; /* Un color de fondo específico para input de archivo */
+}
+
+.input span {
+    color: #e63946; /* Color llamativo para errores */
+    font-size: 0.9em;
+}
+
+.ButtonCreate {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.ButtonCreate:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Foco en inputs para mejorar la accesibilidad */
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+    border-color: #0056b3;
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.2);
+}

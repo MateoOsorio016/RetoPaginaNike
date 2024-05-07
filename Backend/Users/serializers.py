@@ -1,7 +1,7 @@
-from rest_framework import serializers
-from .models import CustomUser
 from datetime import date
 from django.contrib.auth.models import Group
+from rest_framework import serializers
+from .models import CustomUser
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,7 +10,7 @@ class GroupSerializer(serializers.ModelSerializer):
     
 
 class CustomUserSerializer(serializers.ModelSerializer):
-    group = GroupSerializer(many=False)
+    group= serializers.PrimaryKeyRelatedField(queryset=Group.objects.all())
     class Meta:
         model= CustomUser
         fields= ('username', 'first_name', 'last_name', 'address', 'phone' , 'birthdate', 'email', 'password', 'group')
@@ -22,8 +22,27 @@ class CustomUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Debes ser mayor de 18 años para registrarte.")
         return value
     
+    def create (self, validated_data):
+        password = validated_data.pop('password', None)
+        user = super().create(validated_data)
+        if password:
+            user.set_password(password)
+            user.save()
+        return user
 
     
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('username', 'first_name', 'last_name', 'address', 'phone', 'birthdate', 'email', 'group')
+
+    def validate_birthdate(self, value):
+        hoy = date.today()
+        edad = hoy.year - value.year - ((hoy.month, hoy.day) < (value.month, value.day))
+        if edad < 18:
+            raise serializers.ValidationError("Debes ser mayor de 18 años para registrarte.")
+        return value
+
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=50, required=True)
     password = serializers.CharField(max_length=100, required=True, write_only=True)
@@ -49,13 +68,3 @@ class UserLoginSerializer(serializers.Serializer):
         data['email'] = user 
         return data
 
-    # def create(self, validated_data):
-    #     user = User.objects.get(username=validated_data['username'])
-    #     refresh = RefreshToken.for_user(user)
-    #     data = {
-    #         'refresh': str(refresh),
-    #         'access': str(refresh.access_token),
-    #         'user_id': user.id,
-    #         'username': user.username,
-    #     }
-    #     return data

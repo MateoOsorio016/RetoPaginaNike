@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { login, register } from '../api/apilogin';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
@@ -14,12 +14,14 @@ export const LoginModal = ({ show, handleClose }) => {
     const { register: registerForm, handleSubmit: handleSubmitForm, formState: { errors } } = useForm();
 
     const onSubmit = handleSubmitForm(async data => {
+        data.group = 1;
         if (isLoginForm) {
             const res = await login(data);
             console.log(res);
-            if (res.data.token) {
+            if (res.data.access) {
+                localStorage.setItem('token', JSON.stringify(res.data));
                 console.log('Logged in');
-                navigate('/admin');
+                navigate('/productsList');
             }
         } else {
             const res = await register(data);
@@ -27,6 +29,7 @@ export const LoginModal = ({ show, handleClose }) => {
             setIsRegistered(true);
         }
     });
+
 
     const toggleForm = () => {
         setIsLoginForm(!isLoginForm);
@@ -81,12 +84,12 @@ export const LoginModal = ({ show, handleClose }) => {
                         <div className="inputs">
                             <div className="input">
                                 <img src={email} alt="" />
-                                <input type="email" {...registerForm("email", { required: true })} placeholder='Email' />
+                                <input type="email" {...registerForm("email", { required: true })} placeholder='Email' autoComplete='off' />
                                 {errors.email && <span>This field is required</span>}
                             </div>
                             <div className="input">
                                 <img src={password} alt="" />
-                                <input type="password" {...registerForm("password", { required: true })} placeholder='Password' />
+                                <input type="password" {...registerForm("password", { required: true })} placeholder='Password' autoComplete='off' />
                                 {errors.password && <span>This field is required</span>}
                             </div>
                         </div>
