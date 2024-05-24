@@ -48,34 +48,34 @@ export function EditUserForm () {
 
     return (
         <>
-        <h1 className='title'>Editar Perfil</h1>
+        <h1 className='title-form'>Editar Perfil</h1>
         <form onSubmit={handleSubmitForm(onSubmit)} className="form-container">
-            <div className="inputs">
-                <div className="input">
+            <div className="inputs-form">
+                <div className="input-form">
                     <input type="text" {...registerForm("username", { required: true })} placeholder='Username' />
                     {errors.username && <span>This field is required</span>}
                 </div>
-                <div className="input">
+                <div className="input-form">
                     <input type="text" {...registerForm("first_name", { required: true })} placeholder='First Name' />
                     {errors.first_name && <span>This field is required</span>}
                 </div>
-                <div className="input">
+                <div className="input-form">
                     <input type="text" {...registerForm("last_name", { required: true })} placeholder='Last Name' />
                     {errors.last_name && <span>This field is required</span>}
                 </div>
-                <div className="input">
+                <div className="input-form">
                     <input type="text" {...registerForm("address", { required: true })} placeholder='Address' />
                     {errors.address && <span>This field is required</span>}
                 </div>
-                <div className="input">
+                <div className="input-form">
                     <input type="tel" {...registerForm("phone", { required: true })} placeholder='Phone' />
                     {errors.phone && <span>This field is required</span>}
                 </div>
-                <div className="input">
+                <div className="input-form">
                     <input type="date" {...registerForm("birthdate", { required: true })} placeholder='Birthdate' />
                     {errors.birthdate && <span>This field is required</span>}
                 </div>
-                <div className="input">
+                <div className="input-form">
                     <input type="email" {...registerForm("email", { required: true })} placeholder='Email' />
                     {errors.email && <span>This field is required</span>}
                 </div>

@@ -12,13 +12,11 @@
     transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out;
     position: relative;
     overflow: hidden;
-    border: 2px solid #534e57; /* Color 3 */
 
 }
 
 .btn--filled:hover {
-    background: linear-gradient(135deg, #2ba1c5, #111011);
-    color: #fff; /* Invertido para un efecto de hover suave */
+    color: #111111; /* Invertido para un efecto de hover suave */
 }
 
 /* Botón Contorneado */
@@ -29,7 +27,6 @@
     color: #d81c1c; /* Color 3 */
     font-size: 1rem;
     font-weight: bold;
-    border: 2px solid #534e57; /* Color 3 */
     outline: none;
     cursor: pointer;
     background: transparent;
@@ -37,11 +34,6 @@
     transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out;
     position: relative;
     overflow: hidden;
-}
-
-.btn--outline:hover {
-    color: #fff; /* Cambiado para mayor contraste */
-    background: linear-gradient(135deg, #2ba1c5, #111011); /* Invertido para un efecto de hover suave */
 }
 
 /* Animación Activa del Botón */

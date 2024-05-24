@@ -9,39 +9,46 @@ body {
     margin: 0;
     padding: 20px;
 }
-
+.inputs-form{
+    margin-bottom: 15px;
+}
 .form-container {
     width: 100%;
     max-width: 700px;
-    margin: 30px auto;
+    margin: 5px auto;
     padding: 20px;
-    background: #efdfef;
+    background: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.title{
-    text-align: center;
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-
+.title-form{
+    margin: 0 auto;
+    margin-top: 20px;
+    color: #000;
+    margin-left: 12rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: "Bebas Neue", sans-serif ;
+    font-size: 30px;
+    font-weight: 400;
+    font-style: normal;
 }
 
-.input {
+.input-form {
     margin-bottom: 15px;
 }
 
-.input label {
+.input-form label {
     font-size: 16px;
     color: #333;
     margin-bottom: 5px;
     display: block;
 }
 
-.input input,
-.input select,
-.input textarea {
+.input-form input,
+.input-form select,
+.input-form textarea {
     width: 100%;
     padding: 10px 15px;
     font-size: 14px;
@@ -50,13 +57,14 @@ body {
     transition: border-color 0.3s ease-in-out;
 }
 
-.input input[type="file"] {
+.input-form input[type="file"] {
     background-color: #f8f8f8; /* Un color de fondo específico para input de archivo */
 }
 
-.input span {
+.input-form span {
     color: #e63946; /* Color llamativo para errores */
     font-size: 0.9em;
+    flex-direction: column;
 }
 
 .ButtonCreate {
@@ -65,7 +73,7 @@ body {
     padding: 12px;
     font-size: 16px;
     color: white;
-    background-color: #007bff;
+    background-color: #070707;
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -74,12 +82,12 @@ body {
 }
 
 .ButtonCreate:hover {
-    background-color: #0056b3;
+    background-color: #080808;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Foco en inputs para mejorar la accesibilidad */
-input:focus,
+.input-form:focus,
 select:focus,
 textarea:focus,
 button:focus {

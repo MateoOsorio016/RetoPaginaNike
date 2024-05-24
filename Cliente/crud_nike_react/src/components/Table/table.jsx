@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
-import { IoAddCircleOutline, IoEye   } from 'react-icons/io5';
+import React, { useState, useMemo } from 'react';
+import { IoAddCircleOutline, IoEye } from 'react-icons/io5';
+import { IoIosAdd, IoIosSad, IoIosArrowDown, IoIosArrowUp } from 'react-icons/io'
 import { CiEdit } from 'react-icons/ci';
 import { FaTrash } from "react-icons/fa6";
+import { FaBan } from 'react-icons/fa6';
+import { FaSwift } from 'react-icons/fa6';
+import Switch from '@mui/material/Switch';
 import { Link, useNavigate } from 'react-router-dom';
-import {Button} from '../button/button';
+import { Button } from '../button/button';
 import './table.css';
+import { set } from 'react-hook-form';
 
 export const Table = ({
   data,
   columns,
   dbColumns,
   title,
+  currentPage,
+  totalPages,
+  onChangePage,
+  onSearch,
+  onSortChange,
   label,
   createLink = '/',
   createText,
@@ -22,69 +32,105 @@ export const Table = ({
   buttonsActions,
   tituloDocumento,
   nombreArchivo,
+
 }) => {
   const navigate = useNavigate();
-  const [searchType, setSearchType] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearch = (e) => {
-    setSearchType(e.target.value);
+
+  const handleSortAscending = () => {
+    onSortChange('asc');
   };
 
-  let dataTable = [];
+  const handleSortDescending = () => {
+    onSortChange('desc');
+  };
 
-  if (searchType !== '') {
-    dataTable = data.filter((row) =>
-      Object.values(row).some((value) =>
-        value.toString().toLowerCase().includes(searchType.toLowerCase())
-      )
-    );
-  } else {
-    dataTable = data;
-  }
-
+  const handleSearchChange = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    if (onSearch) {
+      onSearch(value);
+    }
+  };
   return (
     <>
-      {title && <h1>{title}</h1>}
+      {title && <h1 className='title-table'>{title}</h1>}
       <div className='tableContainer'>
         {!alternativeStyle && (
           <div className='actionsTable'>
             <div className='left'>
-              <Link to={createLink} className='createButton'>
-                {createText ? (
-                  <>
-                    <IoAddCircleOutline size={30}/> 
-                  </>
-                ) : (
-                  <>
-                    <IoAddCircleOutline/> Crear Nuevo
-                  </>
-                )}
-              </Link>
+              <button className='ButtonCreate-Table'>
+                <Link to={createLink} className='createButton'>
+                  {createText ? (
+                    <>
+                      <IoIosAdd size={29} color='white' /> {createText}
+                    </>
+                  ) : (
+                    <>
+                      <IoIosAdd /> Crear Nuevo
+                    </>
+                  )}
+                </Link>
+              </button>
+            </div>
+            <div className='search-container'>
+              <input
+                type='text'
+                placeholder="Buscar..."
+                onChange={handleSearchChange}
+                value={searchTerm}
+              />
+            </div>
+            <div className="filter">
+              <Button
+                text="ascendente"
+                onClick={handleSortAscending}
+                fill={true}
+                icon={<IoIosArrowUp />}
+              />
+              <Button
+                text="descendente"
+                onClick={handleSortDescending}
+                fill={true}
+                icon={<IoIosArrowDown />}
+              />
             </div>
           </div>
         )}
         <div className='bottomTable'>
-          <table
-            className={`${alternativeStyle ? 'datatable--alternativeStyle' : 'dataTable'}`}
-          >
+          <table className={`${alternativeStyle ? 'datatable--alternativeStyle' : 'dataTable'}`}>
             <thead>
               <tr>
                 {columns?.map((column) => (
-                  <th key={column}>{column}</th>
+                  <th key={column}>{column}
+                  </th>
                 ))}
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {dataTable.length === 0 && searchType ? (
+              {data.length === 0 ? (
                 <tr>
                   <td colSpan={columns.length + 1}>No hay resultados</td>
                 </tr>
               ) : (
-                dataTable.map((row, index) => (
-                  <tr key={index}>
+                data.map((row, index) => (
+                  <tr key={index} className={(row.state === false  || row.is_active === false) ? 'inactive-row' : ''}>
                     {dbColumns?.map((column) => (
-                      <td key={column}>{column === 'id' ? (index + 1) : row[column]}</td>
+                      <td key={column}>
+                        {column === 'image' ? (
+                          <img src={row[column]} style={{ width: '100px', height: 'auto' }} alt="Producto" />
+                        ) : column === 'id' ? (
+                          index + 1
+                        ) : column === 'state' ? (
+                          row[column] ? 'Activo' : 'Inactivo'
+                        ) : column === 'is_active' ? (
+                          row[column] === true ? 'Activo' : 'Inactivo'
+                        ) : (
+                          row[column]
+                        )}
+                      </td>
                     ))}
                     <td className='dataTable__actions'>
                       {buttonsActions?.map((button) => (
@@ -95,34 +141,47 @@ export const Table = ({
                           fill={button.fill}
                         />
                       ))}
+                      <Switch
+                        checked={row.is_active || row.state}
+                        onChange={() => deleteFunction && deleteFunction(row.id)}
+                      />
                       {editButton && (
                         <Button
                           text="Editar"
                           onClick={() => navigate(`${editLink}/${row.id}`)}
                           fill={true}
-                          icon={<CiEdit/>}
+                          icon={<CiEdit />}
                         />
                       )}
-                      <Button
-                      text="Detalle"
-                      onClick={() => detailFunction && detailFunction(row)}
-                      fill={true}
-                      icon={<IoEye/>}
-                      />
-                      <Button
-                        text="Eliminar"
-                        onClick={() => deleteFunction && deleteFunction(row.id)}
-                        fill={false}
-                        icon={<FaTrash />}
-                      />
+                      {detailFunction && (
+                        <Button
+                          text="Detalle"
+                          onClick={() => detailFunction && detailFunction(row)}
+                          fill={true}
+                          icon={<IoEye />}
+                        />
+                      )}
                     </td>
                   </tr>
                 ))
               )}
             </tbody>
           </table>
+          {totalPages > 1 && (
+            <div className="pagination">
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button key={i + 1} onClick={() => onChangePage(i + 1)} className={`pagination-button ${currentPage === i + 1 ? 'pagination-button-active' : ''}`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </>
   );
-};
+
+}
+
+
