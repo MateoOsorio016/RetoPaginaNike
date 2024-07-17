@@ -1,6 +1,5 @@
 import { useContext, createContext, useState, useEffect } from "react"
 import { useNavigate, useParams, useLocation } from "react-router-dom"
-import { Dropdown } from 'react-bootstrap'
 import { TbLogout2 } from "react-icons/tb";
 import { IoSettingsSharp } from "react-icons/io5";
 import NikeLogo from '../../assets/NikeLogo.png'
@@ -89,16 +88,6 @@ export default function Sidebar({ children }) {
         </div>
         
       </nav>
-      <Dropdown
-        show={showMenu}
-        onHide={() => setShowMenu(false)}
-        style={{ position: "fixed", top: menuPosition.y, left: menuPosition.x }}
-      >
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={handleLogout}>Cerrar Sesión</Dropdown.Item>
-          <Dropdown.Item onClick={() => navigate(`/userUpdate/${user.user_id}`)}>Editar Perfil</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
     </aside>
   );
 }

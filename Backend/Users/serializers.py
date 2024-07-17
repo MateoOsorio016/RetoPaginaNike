@@ -52,6 +52,10 @@ class CustomUserCreateSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ('id', 'username', 'first_name', 'last_name', 'address', 'phone', 'birthdate', 'email', 'password', 'group')
 
+    def validate_email(self, value):
+        if CustomUser.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Ya existe un usuario con este correo electrónico.")
+        return value
 
     def validate_birthdate(self, value):
         hoy = date.today()
@@ -59,6 +63,7 @@ class CustomUserCreateSerializer(serializers.ModelSerializer):
         if edad < 18:
             raise serializers.ValidationError("Debes ser mayor de 18 años para registrarte.")
         return value
+
     # Función sifrar la contraseña
     def create (self, validated_data):
         password = validated_data.pop('password', None)
@@ -75,6 +80,13 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ('id', 'username', 'first_name', 'last_name', 'address', 'phone', 'birthdate', 'email', 'group')
+
+    def validate_email(self, value):
+        if self.instance and self.instance.email == value:
+            return value
+        if CustomUser.objects.filter(email=value).exists():
+            raise serializers.ValidationError("Ya existe un usuario con este correo electrónico.")
+        return value
 
     def validate_birthdate(self, value):
         hoy = date.today()

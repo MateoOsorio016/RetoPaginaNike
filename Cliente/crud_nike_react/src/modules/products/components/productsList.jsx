@@ -1,4 +1,4 @@
-import { getProductsList, deleteProduct } from "../api/apiProducts";
+import { getProductsList, deleteProduct, ProductExport } from "../api/apiProducts";
 import { useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import {Table} from "./../../../components/Table/table"
@@ -103,9 +103,20 @@ export function ProductsList () {
       setCurrentPage(1); // Reiniciar a la primera página con cada nueva búsqueda
     };
 
-    const userFilterConfig = {
-      '⬆️': { field: 'price', direction: 'asc', icon: <HiSortAscending  size={25}/> },
-      '⬇️': { field: 'price', direction: 'desc', icon: <HiSortDescending size={25}/>},
+    const handleExcelDownload = async () => {
+      try {
+        const response = await ProductExport(); // Ruta de tu API para exportar productos
+        const blob = response.data;
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'products.xlsx'); // Nombre del archivo a descargar
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+      } catch (error) {
+        console.error('Error al descargar el archivo Excel', error);
+      }
     };
 
   return (
@@ -126,6 +137,7 @@ export function ProductsList () {
         onChangePage={changePage}
         onSearch={onSearch}
         onSortChange={handleSortChane}
+        excelFunction={handleExcelDownload}
       />
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

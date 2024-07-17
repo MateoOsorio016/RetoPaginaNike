@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { login, register } from '../api/apilogin';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
@@ -10,21 +10,42 @@ export function LoginPage() {
     const navigate = useNavigate();
     const [isLoginForm, setIsLoginForm] = useState(true);
     const [isRegistered, setIsRegistered] = useState(false);
-    const { register: registerForm, handleSubmit: handleSubmitForm, formState: { errors } } = useForm();
+    const { register: registerForm, handleSubmit: handleSubmitForm, setError, formState: { errors } } = useForm();
 
     const onSubmit = handleSubmitForm(async data => {
         data.group = 1;
-        if (isLoginForm) {
-            const res = await login(data);
-            if (res.data.access) {
-                localStorage.setItem('token', JSON.stringify(res.data));
-                navigate('/productsList');
+        try {
+            if (isLoginForm) {
+                const res = await login(data);
+                if (res.data.access) {
+                    localStorage.setItem('token', JSON.stringify(res.data));
+                    navigate('/productsList');
+                }
+            } else {
+                const res = await register(data);
+                setIsRegistered(true);
             }
-        } else {
-            const res = await register(data);
-            setIsRegistered(true);
+        } catch (error) {
+            if(error.response && error.response.data){
+                const errormessage = Object.values(error.response.data).flat().join("\n");
+                console.log(errormessage);
+                if (error.response.data.email) {
+                    setError( 'email', {
+                        type: 'manual',
+                        message: errormessage
+                    });
+
+                }else{
+                    setError( 'password', {
+                        type: 'manual',
+                        message: errormessage
+                    });
+                }
+            }
+                
         }
     });
+
 
     const toggleForm = () => {
         setIsLoginForm(!isLoginForm);
@@ -84,11 +105,11 @@ export function LoginPage() {
                     <div className="inputs">
                         <div className="input">
                             <input type="email" {...registerForm("email", { required: true })} placeholder='Email' autoComplete='off' />
-                            {errors.email  && <span className='errors'>Este campo es requerido</span>}
+                            {errors.email  && <span className='errors'>{errors.email.message || 'Este campo es requerido'}</span>}
                         </div>
                         <div className="input">
                             <input type="password" {...registerForm("password", { required: true })} placeholder='Contraseña' autoComplete='off' />
-                            {errors.password && <span className='errors'>Este campo es requerido</span>}
+                            {errors.password && <span className='errors'>{errors.password.message || 'Este campo es requerido'}</span>}
                         </div>
                     </div>
                     <div className="register">

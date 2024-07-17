@@ -11,10 +11,10 @@ class ProductsSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'price', 'quantity', 'description', 'category', 'category_name' ,'image', 'state')
 
     def validate(self, data):
-        if 'quantity' in data and data['quantity'] < 0:
-            raise serializers.ValidationError({"quantity": 'La cantidad no puede ser negativa.'})
-        if 'price' in data and data['price'] < 0:
-            raise serializers.ValidationError({"price": 'El precio no puede ser negativo.'})
+        if 'quantity' in data and data['quantity'] <= 0:
+            raise serializers.ValidationError({"quantity": 'La cantidad no puede ser menor o igual a 0.'})
+        if 'price' in data and data['price'] <= 0:
+            raise serializers.ValidationError({"price": 'El precio no puede ser menor o igual a 0.'})
         
         return data
     

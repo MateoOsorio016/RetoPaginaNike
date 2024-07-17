@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { postUsers, updateUsers, getUser } from "../api/users";
+import { postUsers, updateUsers, getUser, getGroups } from "../api/users";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./../../../components/formmodal/Form.css";
@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 export function UserCreate() {
     const [title, setTitle] = useState("Crear Usuario");
     const [buttonText, setButtonText] = useState("Crear Usuario");
+    const [groups, setGroups] = useState([]); 
     const navigate = useNavigate();
     const params = useParams();
     const { register: register, handleSubmit: handleSubmit, setValue, formState: { errors } } = useForm();
@@ -35,16 +36,30 @@ export function UserCreate() {
             }
             navigate('/usersList');
         } catch (error) {
-            Swal.fire('Error', 'Ha ocurrido un error', 'error');
+            if (error.response && error.response.data){
+                const errormessage = Object.values(error.response.data).flat().join("\n");
+                Swal.fire('Error', errormessage, 'error');
+            }else{
+                Swal.fire('Error', 'Ha ocurrido un error', 'error');
+            }
             console.error("Error al crear producto", error);
         }
     });
+
+    useEffect(() => {
+        async function loadGroups() {
+            const group = await getGroups();
+            setGroups(group.data);
+        }
+        loadGroups();
+    }, [])
 
     useEffect(() => {
         async function loadUser() {
             if (params.id) {
                 const res = await getUser(params.id);
                 console.log(res.data, "esto traje" , params.id);
+                console.log(res.data.group.name, "esto traje" , params.id);
 
                 setValue("group", res.data.group.id);
                 setValue("username", res.data.username);
@@ -60,6 +75,7 @@ export function UserCreate() {
         loadUser();
     }, [])
 
+
     useState(() => {
         if (params.id) {
             setTitle("Editar Usuario");
@@ -74,7 +90,9 @@ export function UserCreate() {
                     <div className="input-form">
                         <select type="select" {...register("group", { required: true })}>
                             <option value="">Selecciona un Grupo</option>
-                            <option value="1">1</option>
+                            {groups.map((group) => (
+                                <option key={group.id} value={group.id}>{group.name}</option>
+                            ))}
                         </select>
                         {errors.state && <span>Este campo es requerido</span>}
                     </div>

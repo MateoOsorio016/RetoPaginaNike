@@ -34,7 +34,12 @@ export function ProductsCreate() {
             }
             navigate('/productsList');
         } catch (error) {
-            Swal.fire('Error', 'Ha ocurrido un error', 'error');
+            if(error.response && error.response.data){
+                const errormessage = Object.values(error.response.data).flat().join("\n");
+                Swal.fire('Error', errormessage, 'error');
+            }else{
+                Swal.fire('Error', 'Ha ocurrido un error', 'error');
+            }
             console.error("Error al crear producto", error);
         }
     });
@@ -100,10 +105,6 @@ export function ProductsCreate() {
                         {errors.category && <span>Este campo es requerido</span>}
                     </div>
                     <div className="input-form">
-                        <input type="text" {...register("description", { required: true })} placeholder='Descripción' />
-                        {errors.description && <span>Este campo es requerido</span>}
-                    </div>
-                    <div className="input-form">
                         <select type="select" {...register("state", { required: true })}>
                             <option value="">Selecciona un Estado</option>
                             <option value="true">Activo</option>
@@ -118,6 +119,10 @@ export function ProductsCreate() {
                             <input type="file" id="image" {...register("image", { required: !params.id })} placeholder='Imagen' />
                             {errors.image && <span>Este campo es requerido</span>}
                         </div>
+                    <div className="input-form">
+                        <textarea type="text" {...register("description", { required: true })} placeholder='Descripción' />
+                        {errors.description && <span>Este campo es requerido</span>}
+                    </div>
                 </div>
                 <button className="ButtonCreate" type="submit">{buttonText}</button>
             </form>

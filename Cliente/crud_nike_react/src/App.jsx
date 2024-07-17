@@ -13,6 +13,7 @@ import { UserCreate } from "./modules/users/components/CreateUser.jsx";
 import { LoginPage } from "./modules/login/components/login";
 import { ResetPasswordRequest } from "./modules/login/components/resetPassword.jsx";
 import { ResetRasswordConfirm } from "./modules/login/components/resetPasswordConfirm.jsx";
+import {NotFound} from './modules/noFound/pageFound.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
@@ -35,7 +36,7 @@ function ProtectedRoute({ children }) {
 
 function LayoutWithSidebar() {
   const location = useLocation(); 
-  const showSidebar = location.pathname !== "/home" && location.pathname !== "/loginPage" && location.pathname !== "/reset_password" && !/^\/api\/users\/reset_password\//.test(location.pathname);
+  const showSidebar = location.pathname !== "/home" && location.pathname !== "/page-not" && location.pathname !== "/loginPage" && location.pathname !== "/reset_password" && !/^\/api\/users\/reset_password\//.test(location.pathname);
 
 
   return (
@@ -45,9 +46,11 @@ function LayoutWithSidebar() {
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<Homepage />} />
+          <Route path="/page-not" element={<NotFound />} />
           <Route path="/loginPage" element={<LoginPage />} />
           <Route path="/reset_password" element={<ResetPasswordRequest />} />
           <Route path="api/users/reset_password/:token" element={<ResetRasswordConfirm />} />
+          <Route path="api/users/reset_password/" element={<ResetRasswordConfirm />} />
           <Route path="/productsList" element={<ProtectedRoute><ProductsList /></ProtectedRoute>} />
           <Route path="/productsCreate" element={<ProtectedRoute><ProductsCreate /></ProtectedRoute>} />
           <Route path="/productsUpdate/:id" element={<ProtectedRoute> <ProductsCreate /></ProtectedRoute>} />

@@ -18,4 +18,7 @@ urlpatterns = [
     path('delete_user/<int:pk>', views.UserDeleteView.as_view()),
     path('users/reset_password', views.UserResetPasswordView.as_view()),
     path('users/reset_password_confirm/', views.UserResetPasswordConfirmView.as_view()),
+    path('users/verify_token/<str:token>', views.VerifyResetToken.as_view()),
+    path('users/groups', views.GroupListView.as_view()),
+    path('UsersExcel', views.UsersExcel.as_view()),
 ]

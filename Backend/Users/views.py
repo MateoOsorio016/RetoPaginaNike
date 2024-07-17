@@ -1,9 +1,11 @@
 from django.utils import timezone
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.contrib.auth.models import Group, Permission
 from Users import email_util
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
@@ -16,14 +18,16 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
-
 from .models import CustomUser
-from .serializers import CustomUserSerializer, CustomUserCreateSerializer ,UserLoginSerializer, UserUpdateSerializer, UserPasswordChangeSerializer, UserPasswordResetSerializer, UserPasswordResetConfirmSerializer
+from .serializers import CustomUserSerializer, CustomUserCreateSerializer ,UserLoginSerializer, UserUpdateSerializer, UserPasswordChangeSerializer, UserPasswordResetSerializer, UserPasswordResetConfirmSerializer, GroupSerializer
 from .pagination import CustomPageNumberPagination
+import pandas as pd
+
+
 # Create your views here.
 
 def _send_email(subject: str,  template_name: str, context: dict, to_email: str):
+    # Función para enviar correos electrónicos
     html_content = render_to_string(f'{template_name}.html', context)
     text_content = strip_tags(html_content)
     email_util.send_email(
@@ -146,7 +150,8 @@ class UserDeleteView(APIView):
         user.save()
         serializer = CustomUserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+
+
       
 class get_user(APIView):
     #api para obtener un usuario
@@ -199,7 +204,7 @@ class UserResetPasswordView(APIView):
                 to_email=user.email,
             )
 
-            return Response(status=status.HTTP_200_OK, data={'message': 'Se ha enviado un correo con las instrucciones para recuperar tu contraseña.'})
+            return Response(status=status.HTTP_200_OK, data={'message': 'Se ha enviado un correo con las instrucciones para recuperar tu contraseña.' , 'token' : user.reset_password_token})
         
         except CustomUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'No se encontró un usuario con este correo electrónico.'})
@@ -213,7 +218,6 @@ class UserResetPasswordConfirmView(APIView):
         serializer.is_valid(raise_exception=True)
         token = serializer.validated_data['token']
 
-
         try:
             user = CustomUser.objects.get(reset_password_token= token, reset_password_token_expires_at__gt=timezone.now())
             user.set_password(serializer.validated_data['new_password'])
@@ -224,8 +228,65 @@ class UserResetPasswordConfirmView(APIView):
         
         except CustomUser.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'No se encontró un usuario con este token.'})
-                
 
 
+class VerifyResetToken(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, token):
+        try:
+            user = CustomUser.objects.get(reset_password_token=token)
+            if user.reset_password_token_expires_at < timezone.now() or user.reset_password_token is None:
+                return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'Token inválido o expirado'})
+            return Response(status=status.HTTP_200_OK, data={'message': 'Token válido'})
+        except CustomUser.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'Token inválido o expirado'})
+        
+
+
+class GroupListView(APIView):
+    #api para listar los grupos
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        groups = Group.objects.all()
+        serializer = GroupSerializer(groups, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 
+class UsersExcel(APIView):
+    # API para importar usuarios desde un archivo Excel
+    def post(self, request):
+        file = request.FILES.get('file')
+        if not file:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': 'Archivo no proporcionado'})
+        try:
+            df = pd.read_excel(file)
+            if df.empty:
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': 'Archivo vacío'})
+            with transaction.atomic():
+                for index, row in df.iterrows():
+                    user_data = {
+                        'username': row['username'],
+                        'first_name': row['first_name'],
+                        'last_name': row['last_name'],
+                        'phone': row['phone'],
+                        'address': row['address'],
+                        'birthdate': row['birthdate'],
+                        'email': row['email'],
+                        'password': row['password'],
+                        'group': row['group']
+                    }
+                    serializer = CustomUserCreateSerializer(data=user_data)
+                    if serializer.is_valid():
+                        user = serializer.save()
+                        user.set_password(row['password'])
+                        user.save()
+                    else:
+                        raise ValueError(f"Fila {index + 2}: Datos inválidos: {serializer.errors}")
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': str(e)})
+
+        return Response(status=status.HTTP_201_CREATED, data={'message': 'Usuarios creados correctamente'})
+
+                
+                

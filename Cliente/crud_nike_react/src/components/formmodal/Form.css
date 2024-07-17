@@ -17,7 +17,7 @@ body {
     max-width: 700px;
     margin: 5px auto;
     padding: 20px;
-    background: #fff;
+    background: #dddbdb67;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
@@ -56,6 +56,9 @@ body {
     border-radius: 10px;
     transition: border-color 0.3s ease-in-out;
 }
+.input-form input::placeholder{
+    color: #635d5d;
+}
 
 .input-form input[type="file"] {
     background-color: #f8f8f8; /* Un color de fondo específico para input de archivo */
@@ -86,6 +89,26 @@ body {
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
+.ButtonCreate2{
+    display: block;
+    width: 50%;
+    margin-left: 120px;
+    margin-top: 15px;
+    padding: 12px;
+    font-size: 16px;
+    color: white;
+    background-color: #070707;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+.ButtonCreate2:hover {
+    background-color: #080808;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
 /* Foco en inputs para mejorar la accesibilidad */
 .input-form:focus,
 select:focus,
@@ -95,3 +118,14 @@ button:focus {
     border-color: #0056b3;
     box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.2);
 }
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .form-container {
+      padding: 10px;
+    }
+  
+    .title-form {
+      font-size: 24px;
+    }
+  }

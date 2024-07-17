@@ -27,8 +27,16 @@ export const getUser = (id) => {
 export const getUsers = (page= 1, order, searchTerm= '') => {
     return API_URL.get(`/get_users?page=${page}&order=${order}&search=${searchTerm}`);
 }
+
+export const getGroups = () => {
+    return API_URL.get('/users/groups');
+}
 export const postUsers = (username, first_name, last_name, address, phone , birthdate, email, password, group ) => {
     return axios.post('http://localhost:8000/api/register', username , first_name, last_name, address, phone , birthdate, email, password, group);
+}
+
+export const cargarUsuarios = (file) => {
+    return API_URL.post('/UsersExcel', file);
 }
 export const deleteUsers = (id) => {
     return API_URL.put(`/delete_user/${id}`);

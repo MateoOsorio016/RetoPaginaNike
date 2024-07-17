@@ -1,9 +1,11 @@
-import { getUsers, deleteUsers } from "../api/users";
+import { getUsers, deleteUsers, cargarUsuarios } from "../api/users";
 import { useEffect, useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import {Table} from "./../../../components/Table/table"
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
+import { useForm } from "react-hook-form";
+import { BeatLoader  } from 'react-spinners';
 import { HiSortAscending, HiSortDescending   } from "react-icons/hi";
 import { set } from "react-hook-form";
 
@@ -14,7 +16,14 @@ export function UsersList () {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [order, setOrder] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');   
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+
+
+  const { register: register, handleSubmit: handleSubmit, setValue, formState: { errors } } = useForm();
+
 
   const parasm = useParams();
 
@@ -106,6 +115,30 @@ export function UsersList () {
       setCurrentPage(1); // Reiniciar a la primera página con cada nueva búsqueda
     };
 
+const onSubmit =handleSubmit(async (data) => {
+  const formData = new FormData();
+  formData.append('file', data.file[0]);
+  console.log("Esto es formData", formData)
+  try {
+    setLoading(true);
+    await cargarUsuarios(formData);
+    setShowSuccess(true);
+    setShow(false);
+    Swal.fire('Carga exitosa', 'Usuarios cargados con éxito!', 'success');
+  } catch (error) {
+    setShowSuccess(false);
+    if(error.response && error.response.data){
+      const errormessage = Object.values(error.response.data).flat().join("\n");
+      Swal.fire('Error al cargar usuarios', errormessage, 'error');
+    }
+    console.error("Error al cargar usuarios", error);
+  }finally{
+    setLoading(false);
+
+  }
+}
+);
+
 
   return (
     <>
@@ -119,22 +152,28 @@ export function UsersList () {
         title="Lista de Usuarios"
         deleteFunction={deleteFunction}
         editButton={parasm.id}
-        detailFunction={handleShow}
         totalPages={totalPages}
         currentPage={currentPage}
         onChangePage={changePage}
         onSearch={onSearch}
-        onSortChange={handleSortChane}        
+        onSortChange={handleSortChane}
+        excelFunction={handleShow}     
       />
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Detalles del Usuario</Modal.Title>
+          <Modal.Title>Carga Masiva</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4 style={{textAlign: "center"}}>{selectedUsers && selectedUsers.username}</h4>
-          <p style={{textAlign: "center"}}>{selectedUsers && selectedUsers.email}</p>
-          <p style={{textAlign: "center"}}>{selectedUsers && selectedUsers.address}</p>
+      <form onSubmit={onSubmit} enctype="multipart/form-data">
+      <input type="file" className="input-form" {...register("file", { required: true })} placeholder='Archivo' />
+      {errors.file && <span>Este campo es requerido</span>}
+      {loading ? (
+        <BeatLoader color="black" className="loader-icon" style={{ display: 'flex', alignItems: 'center', marginLeft: '200px', marginTop: '10px' }} />
+      ) : (
+        <button className="ButtonCreate2" type="submit">Hacer Carga</button>
+      )}
+      </form>
         </Modal.Body>
         <Modal.Footer>
           <button variant="secondary" onClick={handleClose}></button>

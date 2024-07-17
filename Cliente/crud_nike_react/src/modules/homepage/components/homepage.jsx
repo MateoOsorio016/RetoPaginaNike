@@ -92,7 +92,7 @@ export const Homepage = () => {
             </ul>
           </div>
           <div className="search-container">
-            <input class="search" type="search" placeholder="Buscar" />
+            <input className="search" type="search" placeholder="Buscar" />
           </div>
           <li className="nav-item cart-container">
             <button><BiShoppingBag size={30} /></button>

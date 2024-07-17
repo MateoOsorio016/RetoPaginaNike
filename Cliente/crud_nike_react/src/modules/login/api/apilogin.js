@@ -15,3 +15,5 @@ export const resetPassword = (email) => {
 export const reset_password_confirm = (token, data) => {
     return axios.post(`http://localhost:8000/api/users/reset_password_confirm/`, {new_password: data.new_password, token: token});
 }
+
+

@@ -49,7 +49,7 @@ body {
 
 
 .nav-item {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 500;
   cursor: pointer;
   padding: 10px 12px;
@@ -82,10 +82,10 @@ body {
 .search {
   padding: 5px 30px 5px 10px;
   border: none;
-  height: 30px;
+  height: 35px;
   width: 160px;
   border-radius: 30px;
-  background-color: #f0f0f0;
+  background-color: #f0ebeb;
   transition: background-color 0.3s ease;
 }
 
@@ -110,7 +110,7 @@ body {
 .shipping-info {
   font-size: 14px;
   color: #666;
-  margin-top: 5px; /* Añadido un margen izquierdo para separar del nav-list */
+  margin-top: -20px; /* Añadido un margen izquierdo para separar del nav-list */
   text-align: center;
 }
 

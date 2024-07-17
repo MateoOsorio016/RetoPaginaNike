@@ -29,6 +29,8 @@ export const Table = ({
   alternativeStyle = false,
   deleteFunction,
   detailFunction,
+  excel,
+  excelFunction,
   buttonsActions,
   tituloDocumento,
   nombreArchivo,
@@ -95,6 +97,12 @@ export const Table = ({
                 fill={true}
                 icon={<IoIosArrowDown />}
               />
+              <Button
+                text="Excel"
+                onClick={excelFunction}
+                fill={true}
+                icon={<FaSwift />}
+              />
             </div>
           </div>
         )}
@@ -159,6 +167,14 @@ export const Table = ({
                           onClick={() => detailFunction && detailFunction(row)}
                           fill={true}
                           icon={<IoEye />}
+                        />
+                      )}
+                      {excel && (
+                        <Button
+                          text="Eliminar"
+                          onClick={() => deleteFunction(row.id)}
+                          fill={true}
+                          icon={<FaTrash />}
                         />
                       )}
                     </td>

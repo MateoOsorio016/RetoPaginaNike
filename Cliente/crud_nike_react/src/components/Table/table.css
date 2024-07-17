@@ -133,13 +133,14 @@
   }
   
   .search-container input {
-    width: 150px; /* Ajusta el ancho del campo de búsqueda según tus necesidades */
+    width: 122px;
+    height: 50px; /* Ajusta el ancho del campo de búsqueda según tus necesidades */
     padding: 8px;
     margin: 10px 0;
-    border-radius: 15px;
+    border-radius: 20px;
     font-size: 16px;
     margin-right: 2px;
-    background-color: #d9d9d9;
+    background-color: #ffffff;
     transition: background-color 0.3s ease;
     border: none;
   }
@@ -148,7 +149,7 @@
   }
   
   .search-container input:hover {
-        background-color: rgba(82, 75, 75, 0.494);
+        background-color: rgba(192, 171, 171, 0.494);
 }
   .left{
     display: flex;

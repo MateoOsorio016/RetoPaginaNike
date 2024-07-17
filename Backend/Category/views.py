@@ -7,6 +7,9 @@ from .pagination import CategoryPageNumberPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
 # Create your views here.
 
 
@@ -19,6 +22,7 @@ def get_category(pk):
 
 class CategoryList(APIView):
     "API para listar categorias"
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         query= request.query_params.get('search', None)
         if query is not None:
@@ -41,6 +45,7 @@ class CategoryList(APIView):
     
 class CategoryRetrieve(APIView):
     "API para obtener una categoria"
+    permission_classes = [IsAuthenticated]
     def get(self, request, pk):
         try:
             category= Category.objects.get(pk=pk)
@@ -52,6 +57,7 @@ class CategoryRetrieve(APIView):
     
 class CategoryActive(APIView):
     "API para listar categorias activas"
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         categories= Category.objects.filter(state=True)
         serializer= CategorySerializer(categories, many=True)
@@ -59,6 +65,7 @@ class CategoryActive(APIView):
     
 class CategoryCreate(APIView):
     "API para crear una categoria"
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         serializer= CategorySerializer(data=request.data)
         if serializer.is_valid():
@@ -69,6 +76,7 @@ class CategoryCreate(APIView):
     
 class CategoryUpdate(APIView):
     "API para actualizar una categoria"
+    permission_classes = [IsAuthenticated]
     def put(self, request, pk):
         category= get_category(pk)
         serializer= CategorySerializer(category, data=request.data, partial=True)
@@ -80,6 +88,7 @@ class CategoryUpdate(APIView):
     
 class CategoryDelete(APIView):
     "API para eliminar una categoria"
+    permission_classes = [IsAuthenticated]
     def put(self, request, pk):
         try:
             category= get_object_or_404(Category, pk=pk)
