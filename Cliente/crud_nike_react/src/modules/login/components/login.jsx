@@ -66,6 +66,11 @@ export function LoginPage() {
         </div>
     <div class="right-section">
         <div className="login-page">
+            <img
+                src="https://68.media.tumblr.com/0001fbc97153d5279b29e1f33827f332/tumblr_no2cpbqKzI1qlwl18o1_500.gif"
+                alt="Nike"
+                className="nike-logo-form"
+            />
             <h1>{isLoginForm ? 'Iniciar Sesión' : 'Registrate'}</h1>
             {isRegistered ? (
                 <div className='register-ok'>
@@ -115,8 +120,6 @@ export function LoginPage() {
                     <div className="register">
                         {isLoginForm ? '¿No tienes una cuenta? ' : '¿Ya tienes una cuenta? '}
                         <span onClick={toggleForm} style={{ cursor: 'pointer' }}>{isLoginForm ? 'Registrate aquí!' : 'Entre aquí!'}</span>
-                        <hr />
-                        <a className="rest-password"href="/reset_password">Olvidasdes tu contraseña?</a>
                     </div>
                     <div className="submit-container">
                         <button className="submit">{isLoginForm ? 'Iniciar sesión' : 'Registrarse'}</button>
