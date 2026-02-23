@@ -17,7 +17,6 @@ from rest_framework import status
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
-from rest_framework_simplejwt.authentication import JWTAuthentication
 from .models import CustomUser
 from .serializers import CustomUserSerializer, CustomUserCreateSerializer ,UserLoginSerializer, UserUpdateSerializer, UserPasswordChangeSerializer, UserPasswordResetSerializer, UserPasswordResetConfirmSerializer, GroupSerializer
 from .pagination import CustomPageNumberPagination
@@ -189,7 +188,7 @@ class UserResetPasswordView(APIView):
             user = CustomUser.objects.get(email=serializer.validated_data['email'])
             domain= 'http://localhost:5173/api'
             user.create_reset_token()
-            link= f'{domain}/users/reset_password/{user.reset_password_token}'
+            link= f'{domain}/users/reset_password /{user.reset_password_token}'
 
             context ={
                 "first_name_user": user.first_name,

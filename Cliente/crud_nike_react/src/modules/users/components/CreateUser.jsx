@@ -11,7 +11,6 @@ export function UserCreate() {
     const [groups, setGroups] = useState([]); 
     const navigate = useNavigate();
     const params = useParams();
-    const { register: register, handleSubmit: handleSubmit, setValue, formState: { errors } } = useForm();
 
     const onSubmit = handleSubmit(async (data) => {
         const formData = new FormData();

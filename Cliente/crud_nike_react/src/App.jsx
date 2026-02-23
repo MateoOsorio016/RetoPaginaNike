@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
+  import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Home } from "./pages/home";
 import { Homepage } from "../src/modules/homepage/components/homepage.jsx"
@@ -44,7 +44,7 @@ function LayoutWithSidebar() {
       {showSidebar && <div className="sidebar"><Admin /></div>}
       <div className="content">
         <Routes>
-          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/" element={<Navigate to="/home" />} /> 
           <Route path="/home" element={<Homepage />} />
           <Route path="/page-not" element={<NotFound />} />
           <Route path="/loginPage" element={<LoginPage />} />

@@ -133,4 +133,5 @@ class UserPasswordResetSerializer(serializers.Serializer):
 # Serializador de confirmación de restablecimiento de contraseña de usuario
 class UserPasswordResetConfirmSerializer(serializers.Serializer):
     new_password = serializers.CharField(write_only=True)
-    token = serializers.CharField(write_only=True)
+    token = serializers.CharField(max_length=200, required=True)
+
