@@ -80,12 +80,13 @@ export default function Sidebar({ children }) {
           <button onClick={() => navigate(`/userUpdate/${user.user_id}`)}>Editar Perfil</button>
         </div>
         */}
+        {user && (
         <div style={{ flexDirection: 'column', display: 'flex', padding: '5px', backgroundColor: '#000', color: 'white', width: '60px', height: '60px', margin: '0 auto', marginTop: '10px', marginBottom: '1px', borderRadius: '5px', marginLeft: '15rem' }}>
           <button onClick={() => navigate(`/userUpdate/${user.user_id}`)}>
             <IoSettingsSharp size={35} />
           </button>
-
         </div>
+        )}
         
       </nav>
     </aside>
