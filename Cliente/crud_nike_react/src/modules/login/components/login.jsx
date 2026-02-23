@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import React, { useState } from 'react';
 import { set, useForm } from 'react-hook-form';
 import { login, register } from '../api/apilogin';
 import { useNavigate } from 'react-router-dom';
@@ -7,26 +6,43 @@ import './login.css';
 import email from '../../../assets/email.png';
 import password from '../../../assets/password.png';
 
-export const LoginModal = ({ show, handleClose }) => {
+export function LoginPage() {
     const navigate = useNavigate();
     const [isLoginForm, setIsLoginForm] = useState(true);
     const [isRegistered, setIsRegistered] = useState(false);
-    const { register: registerForm, handleSubmit: handleSubmitForm, formState: { errors } } = useForm();
+    const { register: registerForm, handleSubmit: handleSubmitForm, setError, formState: { errors } } = useForm();
 
     const onSubmit = handleSubmitForm(async data => {
         data.group = 1;
-        if (isLoginForm) {
-            const res = await login(data);
-            console.log(res);
-            if (res.data.access) {
-                localStorage.setItem('token', JSON.stringify(res.data));
-                console.log('Logged in');
-                navigate('/productsList');
+        try {
+            if (isLoginForm) {
+                const res = await login(data);
+                if (res.data.access) {
+                    localStorage.setItem('token', JSON.stringify(res.data));
+                    navigate('/productsList');
+                }
+            } else {
+                const res = await register(data);
+                setIsRegistered(true);
             }
-        } else {
-            const res = await register(data);
-            console.log(res);
-            setIsRegistered(true);
+        } catch (error) {
+            if(error.response && error.response.data){
+                const errormessage = Object.values(error.response.data).flat().join("\n");
+                console.log(errormessage);
+                if (error.response.data.email) {
+                    setError( 'email', {
+                        type: 'manual',
+                        message: errormessage
+                    });
+
+                }else{
+                    setError( 'password', {
+                        type: 'manual',
+                        message: errormessage
+                    });
+                }
+            }
+                
         }
     });
 
@@ -41,68 +57,80 @@ export const LoginModal = ({ show, handleClose }) => {
     };
 
     return (
-        <Modal show={show} onHide={handleClose} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>{isLoginForm ? 'Log In' : 'Sign Up'}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                {isRegistered ? (
-                    <div>
-                        <p>Registration successful!</p>
-                        <Button variant="primary" onClick={handleRedirectToLogin}>Go to Login</Button>
-                    </div>
-                ) : (
-                    <form onSubmit={handleSubmitForm(onSubmit)} className="modalContainer">
-                        {!isLoginForm && (
-                            <div className="inputs">
-                                <div className="input">
-                                    <input type="text" {...registerForm("username", { required: true })} placeholder='Username' />
-                                    {errors.username && <span>This field is required</span>}
-                                </div>
-                                <div className="input">
-                                    <input type="text" {...registerForm("first_name", { required: true })} placeholder='First Name' />
-                                    {errors.first_name && <span>This field is required</span>}
-                                </div>
-                                <div className="input">
-                                    <input type="text" {...registerForm("last_name", { required: true })} placeholder='Last Name' />
-                                    {errors.last_name && <span>This field is required</span>}
-                                </div>
-                                <div className="input">
-                                    <input type="text" {...registerForm("address", { required: true })} placeholder='Address' />
-                                    {errors.address && <span>This field is required</span>}
-                                </div>
-                                <div className="input">
-                                    <input type="tel" {...registerForm("phone", { required: true })} placeholder='Phone' />
-                                    {errors.phone && <span>This field is required</span>}
-                                </div>
-                                <div className="input">
-                                    <input type="date" {...registerForm("birthdate", { required: true })} placeholder='Birthdate' />
-                                    {errors.birthdate && <span>This field is required</span>}
-                                </div>
-                            </div>
-                        )}
+        <div>
+        <div className='container-login'>
+        <div class="card-login">
+    <div class="left-section">
+        <h1>JUST DO IT.</h1>
+            <img class="nike" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Logo_NIKE.svg/2000px-Logo_NIKE.svg.png" style={{height: "50px" , width: "100px" , marginLeft: "110px"}} />
+        </div>
+    <div class="right-section">
+        <div className="login-page">
+            <img
+                src="https://68.media.tumblr.com/0001fbc97153d5279b29e1f33827f332/tumblr_no2cpbqKzI1qlwl18o1_500.gif"
+                alt="Nike"
+                className="nike-logo-form"
+            />
+            <h1>{isLoginForm ? 'Iniciar Sesión' : 'Registrate'}</h1>
+            {isRegistered ? (
+                <div className='register-ok'>
+                    <p>Registro Exitoso!</p>
+                    <button onClick={handleRedirectToLogin}>Go to Login</button>
+                </div>
+            ) : (
+                <form onSubmit={handleSubmitForm(onSubmit)} className="login-form">
+                    {!isLoginForm && (
                         <div className="inputs">
                             <div className="input">
-                                <img src={email} alt="" />
-                                <input type="email" {...registerForm("email", { required: true })} placeholder='Email' autoComplete='off' />
-                                {errors.email && <span>This field is required</span>}
+                                <input type="text" {...registerForm("username", { required: true })} placeholder='Username' />
+                                {errors.username && <span className='errors'>Este campo es requerido</span>}
                             </div>
                             <div className="input">
-                                <img src={password} alt="" />
-                                <input type="password" {...registerForm("password", { required: true })} placeholder='Password' autoComplete='off' />
-                                {errors.password && <span>This field is required</span>}
+                                <input type="text" {...registerForm("first_name", { required: true })} placeholder='Nombre' />
+                                {errors.first_name && <span className='errors'>Este campo es requerido</span>}
+                            </div>
+                            <div className="input">
+                                <input type="text" {...registerForm("last_name", { required: true })} placeholder='Apellido' />
+                                {errors.last_name && <span className='errors'>Este campo es requerido</span>}
+                            </div>
+                            <div className="input">
+                                <input type="text" {...registerForm("address", { required: true })} placeholder='Dirección' />
+                                {errors.address && <span className='errors'>Este campo es requerido</span>}
+                            </div>
+                            <div className="input">
+                                <input type="tel" {...registerForm("phone", { required: true })} placeholder='Telefono' />
+                                {errors.phone && <span className='errors'>Este campo es requerido</span>}
+                            </div>
+                            <div className="input">
+                                <input type="date" {...registerForm("birthdate", { required: true })} placeholder='Fecha de nacimiento' />
+                                {errors.birthdate && <span className='errors'>Este campo es requerido</span>}
                             </div>
                         </div>
-                        <div className="register">
-                            {isLoginForm ? 'Don\'t have an account? ' : 'Already have an account? '}
-                            <span onClick={toggleForm}>{isLoginForm ? 'Sign up here!' : 'Log in here!'}</span>
+                    )}
+                    <div className="inputs">
+                        <div className="input">
+                            <input type="email" {...registerForm("email", { required: true })} placeholder='Email' autoComplete='off' />
+                            {errors.email  && <span className='errors'>{errors.email.message || 'Este campo es requerido'}</span>}
                         </div>
-                        <div className="submitContainer">
-                            <button className="submit">{isLoginForm ? 'Log in' : 'Sign up'}</button>
+                        <div className="input">
+                            <input type="password" {...registerForm("password", { required: true })} placeholder='Contraseña' autoComplete='off' />
+                            {errors.password && <span className='errors'>{errors.password.message || 'Este campo es requerido'}</span>}
                         </div>
-                    </form>
-                )}
-            </Modal.Body>
-        </Modal>
+                    </div>
+                    <div className="register">
+                        {isLoginForm ? '¿No tienes una cuenta? ' : '¿Ya tienes una cuenta? '}
+                        <span onClick={toggleForm} style={{ cursor: 'pointer' }}>{isLoginForm ? 'Registrate aquí!' : 'Entre aquí!'}</span>
+                    </div>
+                    <div className="submit-container">
+                        <button className="submit">{isLoginForm ? 'Iniciar sesión' : 'Registrarse'}</button>
+                    </div>
+                </form>
+            )
+            }
+        </div>
+    </div>
+</div>
+</div>
+</div>
     );
 };

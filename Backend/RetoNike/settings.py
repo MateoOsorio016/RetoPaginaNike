@@ -45,7 +45,8 @@ DJANGO_APPS = [
 ]
 LOCAL_APPS = [
     'Products',
-    'Users'
+    'Users',
+    'Category'
 ]
 
 THIRD_PARTY_APPS = [
@@ -172,4 +173,5 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }
- 
+
+
